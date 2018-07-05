@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+    <record id="send_system_form" model="ir.ui.view">
+        <field name="name">send_system_form</field>
+        <field name="model">send.system</field>
+        <field name="arch" type="xml">
+            <form string="">
+                <header>
+                    <button string ='已歸還' type='object' name="send_over"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="person_id"/>
+                        <field name="book_id"/>
+                        <field name="ps"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+        <record id="send_system_tree" model="ir.ui.view">
+            <field name="name">send_system_form</field>
+            <field name="model">send.system</field>
+            <field name="arch" type="xml">
+                <tree string="">
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="send_system_action" model="ir.actions.act_window">
+            <field name="name">send_system_form</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">send.system</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                <!-- Add Text Here -->
+              </p><p>
+                <!-- More details about what a user can do with this object will be OK -->
+              </p>
+            </field>
+        </record>
+
+        <menuitem id="send_system_menu"
+                  name="租借系統"
+                  parent="send_book_ateg"
+                  action="send_system_action"
+                  sequence="3"/>
+
+
+    </data>
+</odoo>

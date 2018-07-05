@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+         <record model="ir.ui.view" id="course_form_view">
+             <field name="name">course.form</field>
+             <field name="model">openacademy.course</field>
+             <field name="arch" type="xml">
+                 <form string="Course Form">
+                     <sheet>
+                         <group>
+                             <field name="name"/>
+                         </group>
+                         <notebook>
+                            <page string="Description">
+                                <field name="description"/>
+                            </page>
+                            <page string="About">
+                                This is an example of notebooks
+                            </page>
+                         </notebook>
+                     </sheet>
+                 </form>
+            </field>
+         </record>
+
+
+
+
+
+        <record id="book_info_form" model="ir.ui.view">
+            <field name="name">book_info_form</field>
+            <field name="model">book.info</field>
+            <field name="arch" type="xml">
+                <form string="">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="isbn"/>
+                            <field name="send_ids"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="book_info_action" model="ir.actions.act_window">
+            <field name="name">book_info_form</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">book.info</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                <!-- Add Text Here -->
+              </p><p>
+                <!-- More details about what a user can do with this object will be OK -->
+              </p>
+            </field>
+        </record>
+
+        <record id="book_info_tree" model="ir.ui.view">
+            <field name="name">book_info_form</field>
+            <field name="model">book.info</field>
+            <field name="arch" type="xml">
+                <tree string="">
+                    <field name="name"/>
+                    <field name="isbn"/>
+                    <field name="send_ids"/>
+
+                </tree>
+            </field>
+        </record>
+
+        <record model="ir.actions.act_window" id="course_list_action">
+            <field name="name">Courses</field>
+            <field name="res_model">openacademy.course</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">Create the first course
+                </p>
+            </field>
+        </record>
+        <menuitem id="book_info_menu"
+                  name="書籍資料"
+                  parent="send_book_ateg"
+                  action="book_info_action"
+                  sequence="2"/>
+
+
+    </data>
+</odoo>

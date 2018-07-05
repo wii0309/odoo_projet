@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="openacademy.course" id="course0">
+            <field name="name">Course 0</field>
+            <field name="description">Course 0's description Can have multiple lines</field>
+        </record>
+
+        <record model="openacademy.course" id="course1">
+            <field name="name">Course 1</field>
+        </record>
+
+        <record model="openacademy.course" id="course2">
+            <field name="name">Course 2</field>
+            <field name="description">Course 2's description</field>
+        </record>
+
+
+        <menuitem id="demo_root" name="TEST" sequence="1"/>
+        <menuitem id="menu_ideas" parent="demo_root" name="Ideas" sequence="10" action="action_list_ideas"/>
+
+    </data>
+</odoo>

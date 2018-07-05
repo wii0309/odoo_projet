@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+       <record id="send_book_views_form" model="ir.ui.view">
+           <field name="name">send_book_views_form</field>
+           <field name="model">send.book</field>
+           <field name="arch" type="xml">
+               <form string="">
+                   <sheet>
+                       <group>
+                           <field name="name"/>
+                           <!--"放變數名"-->
+                           <field name="id_card"/>
+                           <field name="address"/>
+                           <field name="send_ids"/>
+                           <field name="person_type"/>
+                       </group>
+                   </sheet>
+               </form>
+           </field>
+       </record>
+        <record id="send_book_views_tree" model="ir.ui.view">
+            <field name="name">send_book_views_form</field>
+            <field name="model">send.book</field>
+            <field name="arch" type="xml">
+                <tree string="">
+                    <field name="name"/>
+                    <field name="id_card"/>
+                    <field name="address"/>
+                    <field name="send_ids"/>
+                    <field name="person_type"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="send_book_views_action" model="ir.actions.act_window">
+            <field name="name">send_book_views_form</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">send.book</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                <!-- Add Text Here -->
+              </p><p>
+                <!-- More details about what a user can do with this object will be OK -->
+              </p>
+            </field>
+        </record>
+        <menuitem id="send_book_root" name="借書還書系統" sequence="1"/>
+        <menuitem id="send_book_ateg" name="借書人" parent="send_book_root" sequence="1"/>
+        <menuitem id="send_book_menu"
+                  name="借書人"
+                  parent="send_book_ateg"
+                  action="send_book_views_action"
+                  sequence="1"/>
+    </data>
+</odoo>
+
+
