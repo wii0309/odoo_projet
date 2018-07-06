@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from odoo import models, fields, api
 from odoo import models, fields, api, exceptions
 from datetime import timedelta
 
@@ -51,6 +50,7 @@ class Session(models.Model):
      duration = fields.Float(digits=(6, 2), help="Duration in days")
      seats = fields.Integer(string="Number of seats")
      active = fields.Boolean(default=True)
+     color = fields.Integer()
 
      instructor_id = fields.Many2one('res.partner', string="Instructor",
                                      domain=['|', ('instructor', '=', True), ('category_id.name', 'ilike', "Teacher")])
@@ -124,4 +124,31 @@ class Session(models.Model):
 class Gofor(models.Model):
      _name = 'openacademy.gofor'
      description = fields.Text()
-     name = fields.Char(string="Hereinput")
+     name = fields.Char(string="姓名",required=True)
+     birth = fields.Date(string='生日')
+     cellphone = fields.Char(string='手機')
+     con_phone = fields.Char(string='連絡電話')
+     zip = fields.Char(string='收據郵遞區號')
+     rec_addr = fields.Char(string='收據寄送地址',required=True)
+     description=fields.Char(string='',compute='compute_des',store=True)
+     memo = fields.Char(string='備忘錄')
+     show = fields.Char(string='I will call you later at ')
+     amount=fields.Integer(string='數值',required=True)
+
+     store_history=fields.Many2one(comodel_name='openacademy.gofor',string='儲存的')
+     history_data = fields.One2many(comodel_name='openacademy.gofor', inverse_name='store_history')
+
+
+
+     @api.depends('name', 'rec_addr')
+     def compute_des(self):
+          for r in self:
+               if r.name and r.rec_addr:
+                    r.description = r.name + r.rec_addr
+
+     @api.onchange('cellphone')
+     def on_change_show(self):
+          for r in self:
+               r.show=r.cellphone
+
+

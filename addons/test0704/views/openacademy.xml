@@ -130,14 +130,55 @@
              </field>
          </record>
 
+        <record model="ir.ui.view" id="view_openacad_session_kanban">
+             <field name="name">openacad.session.kanban</field>
+             <field name="model">openacademy.session</field>
+             <field name="arch" type="xml">
+                <kanban default_group_by="course_id">
+                    <field name="color"/>
+                        <templates>
+                             <t t-name="kanban-box">
+                                 <div
+                                 t-attf-class="oe_kanban_color_{{kanban_getcolor(record.color.raw_value)}}
+                                 oe_kanban_global_click_edit oe_semantic_html_override
+                                 oe_kanban_card {{record.group_fancy==1 ? 'oe_kanban_card_fancy' : ''}}">
+                                     <div class="oe_dropdown_kanban">
+                                     <!-- dropdown menu -->
+                                         <div class="oe_dropdown_toggle">
+                                             <i class="fa fa-bars fa-lg"/>
+                                                 <ul class="oe_dropdown_menu">
+                                                     <li>
+                                                        <a type="delete">Delete</a>
+                                                     </li>
+                                                     <li>
+                                                        <ul class="oe_kanban_colorpicker" data-field="color"/>
+                                                     </li>
+                                                </ul>
+                                         </div>
+                                         <div class="oe_clear"></div>
+                                     </div>
+                                    <div t-attf-class="oe_kanban_content">
+                                         Session name:
+                                        <field name="name"/><br/>
+                                        Start date:
+                                        <field name="start_date"/><br/>
+                                        duration:
+                                        <field name="duration"/>
+                                     </div>
+                                 </div>
+                             </t>
+                        </templates>
+                </kanban>
+              </field>
+         </record>
         <record model="ir.actions.act_window" id="session_list_action">
             <field name="name">Sessions</field>
             <field name="res_model">openacademy.session</field>
             <field name="view_type">form</field>
-            <field name="view_mode">tree,form,calendar,gantt,graph</field>
+            <field name="view_mode">tree,form,calendar,gantt,graph,kanban</field>
         </record>
 
-
+#################################################################
         <record id="gofor_form" model="ir.ui.view">
             <field name="name">gofor.form</field>
             <field name="model">openacademy.gofor</field>
@@ -146,13 +187,32 @@
                     <sheet>
                         <group>
                             <field name="name"/>
+                            <field name="amount"/>
+                            <field name="birth"/>
+                            <field name="cellphone"/>
+                            <field name="con_phone"/>
+                            <field name="zip"/>
+                            <field name="rec_addr"/>
+                            <field name="show"/>
                         </group>
                         <notebook>
-                            <page string="Description" name="description">
-                                123
+                            <page name="description" string="關於" >
+                                <field name="description"/>
                             </page>
-                            <page string="About" name="This is an example of notebooks">
-                                456
+                            <page string="備忘" name="This is an example of notebooks">
+                                <field name="memo"/>
+                            </page>
+                            <page string="歷史資料">
+                                <field name="history_data">
+                                    <tree delete="false">
+                                        <field name="name"/>
+                                        <field name="birth"/>
+                                        <field name="cellphone"/>
+                                        <field name="con_phone"/>
+                                        <field name="zip"/>
+                                        <field name="rec_addr"/>
+                                    </tree>
+                                </field>
                             </page>
                         </notebook>
                     </sheet>
@@ -164,17 +224,37 @@
             <field name="name">gofor.tree</field>
             <field name="model">openacademy.gofor</field>
             <field name="arch" type="xml">
-                <tree string="">
+                <tree string="tree string what happened">
                     <field name="name"/>
+                    <field name="amount"/>
+                    <field name="birth"/>
+                    <field name="cellphone"/>
+                    <field name="con_phone"/>
+                    <field name="zip"/>
+                    <field name="rec_addr"/>
                 </tree>
             </field>
         </record>
+
+
+         <record model="ir.ui.view" id="gofor_graph_view">
+             <field name="name">openacademy.gofor.graph</field>
+             <field name="model">openacademy.gofor</field>
+             <field name="arch" type="xml">
+                 <graph string="person-count">
+                     <field name="name"/>
+                     <field name="amount" type="measure"/>
+                 </graph>
+             </field>
+         </record>
+
+
 
         <record id="gofor_action" model="ir.actions.act_window">
             <field name="name">gofor.action</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">openacademy.gofor</field>
-            <field name="view_mode">tree,form</field>
+            <field name="view_mode">tree,form,graph</field>
             <field name="help" type="html">
                 <p class="oe_view_nocontent_create">
                     <!-- Add Text Here -->
@@ -190,17 +270,21 @@
             <field name="arch" type="xml">
                 <search>
                     <field name="name"/>
+                    <field name="name"/>
+                    <field name="birth"/>
+                    <field name="cellphone"/>
+                    <field name="con_phone"/>
+                    <field name="zip"/>
+                    <field name="rec_addr"/>
                 </search>
             </field>
         </record>
 
-
-
-        <menuitem id="main_openacademy_menu" name="ALLfunctionIN"/>
+        <menuitem id="main_openacademy_menu" name="ALLfunctionIN" sequence="1" />
         <menuitem id="openacademy_menu" name="Outline" parent="main_openacademy_menu"/>
         <menuitem id="courses_menu" name="Courses" parent="openacademy_menu" action="course_list_action"/>
         <menuitem id="session_menu" name="Sessions" parent="openacademy_menu" action="session_list_action"/>
-        <menuitem id="another_menu" name="testing area" parent="main_openacademy_menu"/>
-        <menuitem id="gofor_menu" name="Modified" parent="another_menu" action="gofor_action"/>
+        <menuitem id="another_menu" name="作業區" parent="main_openacademy_menu"/>
+        <menuitem id="gofor_menu" name="客戶資料輸入測試" parent="another_menu" action="gofor_action"/>
     </data>
 </odoo>
