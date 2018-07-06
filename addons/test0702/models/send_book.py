@@ -26,8 +26,8 @@ class Sedsystem(models.Model):
         return_date = datetime.date.today().strftime('%Y-%m-%d')
         self.ps='已歸還'+return_date
 
-    @api.depends('book_id','person_id')
-    def set_default_name(self):
-        for line in self:
-            if (self.book_id is True and self.person_id is True)
-             self.name=self.name +self.book_id.name
+    # @api.depends('book_id','person_id')
+    # def set_default_name(self):
+    #     for line in self:
+    #         if (self.book_id is True and self.person_id is True)
+    #          self.name=self.name +self.book_id.name
