@@ -194,6 +194,7 @@
                             <field name="zip"/>
                             <field name="rec_addr"/>
                             <field name="show"/>
+                            <field name="store_history"/>
                         </group>
                         <notebook>
                             <page name="description" string="關於" >
@@ -202,7 +203,7 @@
                             <page string="備忘" name="This is an example of notebooks">
                                 <field name="memo"/>
                             </page>
-                            <page string="歷史資料">
+                            <page string="家屬資料">
                                 <field name="history_data">
                                     <tree delete="false">
                                         <field name="name"/>
@@ -232,6 +233,7 @@
                     <field name="con_phone"/>
                     <field name="zip"/>
                     <field name="rec_addr"/>
+                    <field name="store_history"/>
                 </tree>
             </field>
         </record>
