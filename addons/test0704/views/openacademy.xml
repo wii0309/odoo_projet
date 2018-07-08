@@ -266,6 +266,19 @@
             </field>
         </record>
 
+        <record model="ir.ui.view" id="gofor_graph_view">
+             <field name="name">gofor.graph</field>
+             <field name="model">openacademy.gofor</field>
+             <field name="arch" type="xml">
+                 <graph string="chart_show">
+                     <field name="name"/>
+                     <field name="amount" type="measure"/>
+                 </graph>
+             </field>
+         </record>
+
+        
+
         <record id="gofor_search" model="ir.ui.view">
             <field name="name">gofor.search</field>
             <field name="model">openacademy.gofor</field>
