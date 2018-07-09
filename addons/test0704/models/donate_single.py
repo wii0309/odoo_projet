@@ -24,7 +24,27 @@ class Donatesingle(models.Model):
     con_addr = fields.Char(string='報表地址', store=True)
     zip = fields.Char(string='收據郵遞區號', store=True)
     rec_addr = fields.Char(string='收據地址', store=True)
+    family_check =fields.One2many(comodel_name='donate.family.line', inverse_name='parent_id', string='捐款人名冊')
     ps = fields.Text('備註')
+
+    @api.onchange('donate_member')
+    def show_family(self):
+        r = []
+        family = None
+
+        for line in self.donate_member.store_history.history_data:
+            r.append([0, 0, {
+                'donate_member': line.id
+            }])
+        self.update({
+            'family_check': r,
+        })
+
+class DonateSingleLine(models.Model):
+    _name = 'donate.family.line'
+
+    parent_id = fields.Many2one(comodel_name='donate.single', index=True)
+    donate_member = fields.Many2one(comodel_name='openacademy.gofor', string='捐款人', index=True)
 
 
 

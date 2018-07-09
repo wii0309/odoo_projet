@@ -171,7 +171,11 @@ class Gofor(models.Model):
           for r in self:
                r.show=r.cellphone
 
-
-
-
+     @api.multi
+     def name_get(self):
+        result = []
+        for record in self:
+            name = "%s" % (record.name)
+            result.append((record.id, name))
+        return result
 
