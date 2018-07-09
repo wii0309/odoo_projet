@@ -20,6 +20,7 @@
     'data': [
         'views/openacademy.xml',
         'views/partner.xml',
+        'views/donate_single.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
