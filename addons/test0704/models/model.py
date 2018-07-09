@@ -7,10 +7,12 @@ class Course(models.Model):
 
      name = fields.Char(string="Title", required=True)
      description = fields.Text()
-     responsible_id = fields.Many2one('res.users', ondelete='set null', string="Responsible", index=True)
+
+     responsible_id = fields.Many2one('res.users',ondelete='set null', string="Responsible", index=True)
      session_ids = fields.One2many('openacademy.session', 'course_id', string="Sessions")
 
-     # 去改寫action的Duplicate
+
+     #去改寫action的Duplicate
      @api.multi
      def copy(self, default=None):
           default = dict(default or {})
@@ -40,36 +42,46 @@ class Course(models.Model):
 class Session(models.Model):
      _name = 'openacademy.session'
 
-     @api.depends('attendee_ids')
-     def _get_attendees_count(self):
-          for r in self:
-               r.attendees_count = len(r.attendee_ids)
-
      name = fields.Char(required=True)
      start_date = fields.Date(default=fields.Date.today)
-     duration = fields.Float(digits=(6, 2), help="Duration in days")
+     duration = fields.Float(digits=(6,2),help="Duration in days")
      seats = fields.Integer(string="Number of seats")
      active = fields.Boolean(default=True)
      color = fields.Integer()
 
-     instructor_id = fields.Many2one('res.partner', string="Instructor",
-                                     domain=['|', ('instructor', '=', True), ('category_id.name', 'ilike', "Teacher")])
-     course_id = fields.Many2one('openacademy.course', ondelete='cascade', string="Course", required=True)
+     instructor_id = fields.Many2one('res.partner', string="Instructor",domain=['|', ('instructor', '=', True),('category_id.name', 'ilike', "Teacher")])
+     course_id = fields.Many2one('openacademy.course',ondelete='cascade', string="Course", required=True)
      attendee_ids = fields.Many2many('res.partner', string="Attendees")
      taken_seats = fields.Float(string="Taken seats", compute='_taken_seats')
      end_date = fields.Date(string="End Date", store=True, compute='_get_end_date', inverse='_set_end_date')
      hours = fields.Float(string="Duration in hours", compute='_get_hours', inverse='_set_hours')
      attendees_count = fields.Integer(string="Attendees count", compute='_get_attendees_count', store=True)
+     # state = fields.Selection([('draft', "Draft"),('confirmed', "Confirmed"),('done', "Done"),], default='draft')
+
+     @api.multi
+     def action_draft(self):
+          self.state = 'draft'
+
+     @api.multi
+     def action_confirm(self):
+          self.state = 'confirmed'
+
+     @api.multi
+     def action_done(self):
+          self.state = 'done'
 
      @api.depends('seats', 'attendee_ids')
      def _taken_seats(self):
           for r in self:
                if not r.seats:
-                    r.taken_seats = 0.0
+                 r.taken_seats = 0.0
                else:
-                    r.taken_seats = 100.0 * len(r.attendee_ids) / r.seats
+                 r.taken_seats = 100.0 * len(r.attendee_ids) / r.seats
 
-
+     @api.depends('attendee_ids')
+     def _get_attendees_count(self):
+          for r in self:
+              r.attendees_count = len(r.attendee_ids)
 
      @api.depends('duration')
      def _get_hours(self):
@@ -134,11 +146,19 @@ class Gofor(models.Model):
      memo = fields.Char(string='備忘錄')
      show = fields.Char(string='I will call you later at ')
      amount=fields.Integer(string='數值',required=True)
+     state = fields.Selection(selection=[('abc', '未審核'), ('abcd', '已審核')], string='Status', default='abc', index=True)
 
-     store_history=fields.Many2one(comodel_name='openacademy.gofor',string='儲存的')
+     is_donate = fields.Boolean(string='是否捐助', default=True)
+     is_merge = fields.Boolean(string='是否合併收據', default=True)
+
+     store_history=fields.Many2one(comodel_name='openacademy.gofor',string='戶長')
      history_data = fields.One2many(comodel_name='openacademy.gofor', inverse_name='store_history')
 
+     def toggle_donate(self):
+          self.is_donate = not self.is_donate
 
+     def toggle_merge(self):
+          self.is_merge = not self.is_merge
 
      @api.depends('name', 'rec_addr')
      def compute_des(self):
@@ -150,5 +170,8 @@ class Gofor(models.Model):
      def on_change_show(self):
           for r in self:
                r.show=r.cellphone
+
+
+
 
 
