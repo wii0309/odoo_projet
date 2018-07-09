@@ -1,5 +1,6 @@
+# -*- coding: utf-8 -*-
 from odoo import api, fields, models
-
+from odoo.exceptions import ValidationError
 
 class Donatesingle(models.Model):
     _name = 'donate.single'
@@ -11,8 +12,8 @@ class Donatesingle(models.Model):
     donate_date = fields.Date('捐款日期', index=True, required=True)
     donate_total = fields.Integer(string='捐款總額', compute='compute_total', store=True)
     receipt_send = fields.Boolean(string='收據寄送')
-    work_id = fields.Many2one(comodel_name='openacademy.gofor', string='收費員', states={2: [('readonly', True)]},
-                              required=True)
+    # work_id = fields.Many2one(comodel_name='openacademy.gofor', string='收費員', states={2: [('readonly', True)]},
+    #                           required=True)
     payment_method = fields.Selection([(1, '現金'), (2, '郵政劃撥'), (3, '信用卡扣款'), (4, '銀行轉帳'), (5, '支票')], string='繳費方式',
                                       required=True)
     name = fields.Char(string='姓名', store=True)

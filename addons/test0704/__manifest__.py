@@ -21,6 +21,7 @@
         'views/openacademy.xml',
         'views/partner.xml',
         'views/donate_single.xml',
+        'views/donate_order.xml',
     ],
     # only loaded in demonstration mode
     'demo': [
