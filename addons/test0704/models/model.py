@@ -179,3 +179,19 @@ class Gofor(models.Model):
             result.append((record.id, name))
         return result
 
+     @api.model
+     def create(self, vals):
+          res_id = super(Gofor, self).create(vals)
+          if res_id.name is False:
+               raise ValidationError(u'請輸入姓名')
+
+          if res_id.parent.id is False:  # 如果新建的捐款者資料沒有選定戶長是誰, 那麼就由系統自動將該使用者設為戶長
+               res_id.write({
+                    'parent': res_id.id,
+               })
+          elif res_id.parent.id:  # 如果有選定戶長
+               old_member_code = self.env['normal.p'].search([('id', '=', res_id.parent.id)])  # 搜尋該戶長的資料
+               if old_member_code.w_id:  # 如果該戶長有w_id, 則將捐款者的w_id 設為與戶長相同的w_id
+                    res_id.write({
+                         'w_id': old_member_code.w_id
+                    })
