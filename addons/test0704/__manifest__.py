@@ -15,13 +15,14 @@
     'category': 'Uncategorized',
     'version': '0.1',
 
-    'depends': ['base'],
+    'depends': ['base','sale'],
 
     'data': [
         'views/openacademy.xml',
         'views/partner.xml',
         'views/donate_single.xml',
         'views/donate_order.xml',
+        'views/sale_order_view.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

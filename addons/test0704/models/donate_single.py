@@ -62,11 +62,15 @@ class Donatesingle(models.Model):
             'family_check': r,
         })
 
+
+
+
     def add_to_list(self):
         for r in self.donate_member.history_data:
             res=self.env['donate.order'].create({
                 'donate_member':r.id,
-                'donate':self.donate_total
+                'donate':self.donate_total,
+                'con_phone':self.con_phone
             })
 
 

@@ -133,6 +133,20 @@ class Session(models.Model):
           for r in self:
                if r.instructor_id and r.instructor_id in r.attendee_ids:
                     raise exceptions.ValidationError("A session's instructor can't be an attendee")
+
+
+
+class Readclass(models.Model):
+     _name = 'read.class'
+     date_order = fields.Datetime(string='Order Date')
+     buyer=fields.Many2one(comodel_name='res.partner',string='客戶')
+     relatep=fields.Many2one(comodel_name='sale.order',string='關聯訂單')
+     checkp=fields.Many2one(comodel_name='product.product',string='簽到產品')
+     account=fields.Float(string='數量')
+     price = fields.Float(string='單價')
+     total = fields.Float(string='總金額')
+
+
 class Gofor(models.Model):
      _name = 'openacademy.gofor'
      description = fields.Text()
