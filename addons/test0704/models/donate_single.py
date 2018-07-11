@@ -24,11 +24,11 @@ class Donatesingle(models.Model):
     con_addr = fields.Char(string='報表地址', store=True)
     zip = fields.Char(string='收據郵遞區號', store=True)
     rec_addr = fields.Char(string='收據地址', store=True)
-    # bridge_money = fields.Integer(string='$')
-    # road_money = fields.Integer(string='$')
-    # coffin_money = fields.Integer(string='$')
-    # poor_help_money = fields.Integer(string='$')
-    # noassign_money = fields.Integer(string='$')
+    bridge_money = fields.Integer(string='$', store=True)
+    road_money = fields.Integer(string='$', store=True)
+    coffin_money = fields.Integer(string='$', store=True)
+    poor_help_money = fields.Integer(string='$', store=True)
+    noassign_money = fields.Integer(string='$', store=True)
     family_check =fields.One2many(comodel_name='donate.family.line', inverse_name='parent_id', string='捐款人名冊')
 
     donate_list = fields.One2many(comodel_name='donate.order', inverse_name='donate_list_id', string='捐款明細',
@@ -36,7 +36,7 @@ class Donatesingle(models.Model):
 
     current_donate_people = fields.Integer('捐款人數小計')
 
-    ps = fields.Text('備註')
+    ps = fields.Text('備註' ,compute='compute_des',store=True)
 
     history_donate_flag = fields.Boolean(string='是否上次捐款')
     #    history_payment_method = fields.Boolean('是否上次捐款方式')
@@ -48,6 +48,12 @@ class Donatesingle(models.Model):
     donate_family_list = fields.Char('眷屬列表', compute='compute_family_list')
     print_all_donor_list = fields.Boolean(string='列印願意捐助的眷屬')
     donate_list_id = fields.Many2one(comodel_name='donate.single', ondelete='cascade', index=True)
+
+    # bridge = fields.Boolean(string='造橋')
+    # road = fields.Boolean(string='補路')
+    # coffin = fields.Boolean(string='施棺')
+    # poor_help = fields.Boolean(string='貧困扶助')
+    # noassign = fields.Boolean(string='一般捐款')
 
     @api.onchange('donate_member')
     def show_family(self):
@@ -62,9 +68,6 @@ class Donatesingle(models.Model):
             'family_check': r,
         })
 
-
-
-
     def add_to_list(self):
         for r in self.donate_member.history_data:
             res=self.env['donate.order'].create({
@@ -73,6 +76,10 @@ class Donatesingle(models.Model):
                 'con_phone':self.con_phone
             })
 
+    @api.depends('donate_total')
+    def compute_des(self):
+        for r in self:
+            r.ps = r.donate_total
 
 class DonateSingleLine(models.Model): #先產出一個資料表供當次捐款明細的編輯，才不會更改到原始會員資料
     _name = 'donate.family.line'

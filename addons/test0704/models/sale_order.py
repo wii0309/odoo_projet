@@ -6,8 +6,6 @@ class Test0704saleorder(models.Model):
     _inherit = 'sale.order'
     gym_id=fields.Many2one(comodel_name='openacademy.course',string='銷售健身房')
 
-
-
     @api.multi
     def action_confirm(self):
         res = super(Test0704saleorder, self).action_confirm()
@@ -23,9 +21,6 @@ class Test0704saleorder(models.Model):
             })
         return res
 
-
-
 class Test0704saleexercise(models.Model):
-
     _inherit = 'sale.order.line'
     exercise_id=fields.Many2one(comodel_name='openacademy.gofor',string='Gofor資料輸入')

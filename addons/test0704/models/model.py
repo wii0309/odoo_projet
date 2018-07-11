@@ -145,6 +145,7 @@ class Readclass(models.Model):
      account=fields.Float(string='數量')
      price = fields.Float(string='單價')
      total = fields.Float(string='總金額')
+     color = fields.Integer()
 
 
 class Gofor(models.Model):

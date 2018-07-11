@@ -22,7 +22,6 @@
             <field name="model">donate.single</field>
             <field name="arch" type="xml">
                 <form string="">
-
                     <sheet>
                         <div class="oe_button_box" name="button_box">
                             <button name="add_to_list" string="產生捐款明細" type="object" class="oe_stat_button"
@@ -54,21 +53,21 @@
                             <field name="receipt_send"/>
                         </group>
                         <group>
-                            <field name="ps"/>
+                            <field name="ps" string="Thanks for your:"/>
                         </group>
                         <group>
-                            <!--<group col="6">-->
-                                <!--<field name="bridge_money" string="A.造橋"/>-->
-                                <!--<field name="road_money" string="B.補路"/>-->
-                                <!--<field name="coffin_money" string="C.施棺"/>-->
-                                <!--<field name="poor_help_money" string="D.貧困扶助"/>-->
-                                <!--<field name="noassign_money" string="E.一般捐款"/>-->
-                            <!--</group>-->
+                            <group col="6">
+                            <!--<field name="bridge_money" string="A.造橋"/>-->
+                            <!--<field name="road_money" string="B.補路"/>-->
+                            <!--<field name="coffin_money" string="C.施棺"/>-->
+                            <!--<field name="poor_help_money" string="D.貧困扶助"/>-->
+                            <!--<field name="noassign_money" string="E.一般捐款"/>-->
+                            </group>
                             <field name="family_check">
                                 <tree>
                                     <field name="donate_member"/>
-                                    <!--<field name="is_donate"/>-->
-                                    <!--<field name="is_merge"/>-->
+                                    <field name="is_donate"/>
+                                    <field name="is_merge"/>
                                     <!--<field name="bridge_money" string="A.造橋"/>-->
                                     <!--<field name="road_money" string="B.補路"/>-->
                                     <!--<field name="coffin_money" string="C.施棺"/>-->
