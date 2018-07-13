@@ -13,6 +13,8 @@ class DonateOrder(models.Model):
     donate_total = fields.Integer(string='捐款總額')
     donate_type = fields.Selection(selection=[(01, '造橋'), (02, '補路'), (03, '施棺'), (04, '伙食費'), (05, '貧困扶助'),(06, '一般捐款'), (99, '其他工程')],
                                    string='捐款種類' , index =True)
+    payment_method = fields.Selection(selection=[(1, '現金'), (2, '郵政劃撥'), (3, '信用卡扣款'), (4, '銀行轉帳'), (5, '支票')], string='繳費方式',
+                                      required=True)
     state = fields.Selection([(1, '已產生'), (2, '已作廢')],
                              string='狀態', default=1, index=True)
     active = fields.Boolean(default=True)
@@ -46,7 +48,7 @@ class DonateOrder(models.Model):
     coffin_money = fields.Integer(string='$')
     poor_help_money = fields.Integer(string='$')
     others_money = fields.Integer(string='$')
-    payment_method = fields.Integer(string='捐款方式')
+    # payment_method = fields.Integer(string='捐款方式')
     cash = fields.Boolean(string='現金')
     mail = fields.Boolean(string='郵政劃撥')
     credit_card = fields.Boolean(string='信用卡扣款')

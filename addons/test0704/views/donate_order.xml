@@ -6,11 +6,13 @@
             <field name="model">donate.order</field>
             <field name="arch" type="xml">
                 <tree string="">
+                    <field name="donate_member"/>
                     <field name="state"/>
                     <field name="con_phone"/>
                     <field name="donate"/>
                     <field name="donate_type"/>
-                    <field name="use_amount" colspan="1"/>
+                    <field name="payment_method"/>
+                    <!--<field name="use_amount" colspan="1"/>-->
                     <field name="donate_date"/>
                     <field name="donate_member" invisible = "1"/>
                 </tree>
@@ -24,7 +26,6 @@
                 <form string="">
                     <header>
                         <field name="state" widget="statusbar" statusbar_visible="1,2"/>
-
                     </header>
                     <sheet>
                         <div align="center">
@@ -41,6 +42,7 @@
                             <field name="donate_total"/>
                             <field name="donate_type"/>
                             <field name="self_id"/>
+                            <field name="payment_method"/>
                         </group>
                         <div align="center">
                             <span STYLE='FONT-SIZE:20PX'>感謝捐助</span>

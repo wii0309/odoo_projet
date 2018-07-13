@@ -178,8 +178,6 @@
             <field name="view_mode">tree,form,calendar,gantt,graph,kanban</field>
         </record>
 
-        #############################
-
         <record id="readclass_form" model="ir.ui.view">
             <field name="name">readclass_form</field>
             <field name="model">read.class</field>
@@ -263,7 +261,6 @@
             <!--</field>-->
         <!--</record>-->
 
-
         <record id="readclass_action" model="ir.actions.act_window">
             <field name="name">readclass_action</field>
             <field name="type">ir.actions.act_window</field>
@@ -278,9 +275,6 @@
             </field>
         </record>
 
-
-
-        #################################################################
         <record id="gofor_form" model="ir.ui.view">
             <field name="name">gofor.form</field>
             <field name="model">openacademy.gofor</field>
@@ -366,7 +360,7 @@
 
 
         <record id="gofor_action" model="ir.actions.act_window">
-            <field name="name">gofor.action</field>
+            <field name="name">inPUTdata</field>
             <field name="type">ir.actions.act_window</field>
             <field name="res_model">openacademy.gofor</field>
             <field name="view_mode">tree,form,graph</field>

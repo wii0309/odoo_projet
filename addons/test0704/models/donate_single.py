@@ -10,36 +10,34 @@ class Donatesingle(models.Model):
     state = fields.Selection([(1, '已產生'), (2, '已列印'), (3, '已作廢')],
                              string='狀態', default=1, index=True)
     donate_date = fields.Date('捐款日期', index=True, required=True)
-    donate_total = fields.Integer(string='捐款總額')
+    donate_total = fields.Integer(string='捐款總額' , compute='calculate', store=True)
     receipt_send = fields.Boolean(string='收據寄送')
     # work_id = fields.Many2one(comodel_name='openacademy.gofor', string='收費員', states={2: [('readonly', True)]},
     #                           required=True)
     payment_method = fields.Selection([(1, '現金'), (2, '郵政劃撥'), (3, '信用卡扣款'), (4, '銀行轉帳'), (5, '支票')], string='繳費方式',
                                       required=True)
-    name = fields.Char(string='姓名', store=True)
-    self_iden = fields.Char(string='身分證字號', store=True)
-    cellphone = fields.Char(string='手機', store=True)
-    con_phone = fields.Char(string='聯絡電話', store=True)
-    zip_code = fields.Char(string='報表郵遞區號', store=True)
-    con_addr = fields.Char(string='報表地址', store=True)
-    zip = fields.Char(string='收據郵遞區號', store=True)
-    rec_addr = fields.Char(string='收據地址', store=True)
-    bridge_money = fields.Integer(string='$', store=True)
-    road_money = fields.Integer(string='$', store=True)
-    coffin_money = fields.Integer(string='$', store=True)
-    poor_help_money = fields.Integer(string='$', store=True)
-    noassign_money = fields.Integer(string='$', store=True)
+    name = fields.Char(string='姓名',related='donate_member.name', readonly=True)
+    self_iden = fields.Char(string='身分證字號')
+    cellphone = fields.Char(string='手機' )
+    con_phone = fields.Char(string='聯絡電話',related='donate_member.con_phone',readonly=True)
+    zip_code = fields.Char(string='報表郵遞區號')
+    con_addr = fields.Char(string='報表地址')
+    zip = fields.Char(string='收據郵遞區號' ,related='donate_member.zip',readonly=True)
+    rec_addr = fields.Char(string='收據地址',related='donate_member.rec_addr',readonly=True)
+    bridge_money = fields.Integer(string='$')
+    road_money = fields.Integer(string='$' )
+    coffin_money = fields.Integer(string='$')
+    poor_help_money = fields.Integer(string='$')
+    noassign_money = fields.Integer(string='$')
     family_check =fields.One2many(comodel_name='donate.family.line', inverse_name='parent_id', string='捐款人名冊')
 
     donate_list = fields.One2many(comodel_name='donate.order', inverse_name='donate_list_id', string='捐款明細',
                                   states={2: [('readonly', True)]})
 
-    current_donate_people = fields.Integer('捐款人數小計')
-
     ps = fields.Text('備註' ,compute='compute_des',store=True)
 
     history_donate_flag = fields.Boolean(string='是否上次捐款')
-    #    history_payment_method = fields.Boolean('是否上次捐款方式')
+    # history_payment_method = fields.Boolean('是否上次捐款方式')
     report_price_big = fields.Char(string='報表用大寫金額')
     report_donate = fields.Char(string='報表用捐款日期')
     sreceipt_number = fields.Integer(string='收據筆數', compute='compute_total', store=True)
@@ -48,18 +46,46 @@ class Donatesingle(models.Model):
     donate_family_list = fields.Char('眷屬列表', compute='compute_family_list')
     print_all_donor_list = fields.Boolean(string='列印願意捐助的眷屬')
     donate_list_id = fields.Many2one(comodel_name='donate.single', ondelete='cascade', index=True)
+    donate_type = fields.Selection(selection=[(01, '造橋'), (02, '補路'), (03, '施棺'), (04, '伙食費'), (05, '貧困扶助'), (06, '一般捐款'), (99, '其他工程')],
+        string='捐款種類', index=True)
+    current_donate_project = fields.Integer('捐款項目小計')
 
-    # bridge = fields.Boolean(string='造橋')
-    # road = fields.Boolean(string='補路')
-    # coffin = fields.Boolean(string='施棺')
-    # poor_help = fields.Boolean(string='貧困扶助')
-    # noassign = fields.Boolean(string='一般捐款')
+    @api.onchange('family_check')
+    def current_people(self):
+        self.current_donate_people = 0
+        self.current_donate_total = 0
+        self.current_donate_project = 0
+        for line in self.family_check:
+            if line.is_donate is True:
+                self.current_donate_people += 1
+                if line.bridge_money != 0:
+                    self.current_donate_project += 1
+                    self.current_donate_total += line.bridge_money
+                if line.road_money != 0:
+                    self.current_donate_project += 1
+                    self.current_donate_total += line.road_money
+                if line.coffin_money != 0:
+                    self.current_donate_project += 1
+                    self.current_donate_total += line.coffin_money
+                if line.poor_help_money != 0:
+                    self.current_donate_project += 1
+                    self.current_donate_total += line.poor_help_money
+                if line.noassign_money != 0:
+                    self.current_donate_project += 1
+                    self.current_donate_total += line.noassign_money
+            elif line.is_donate is False:
+                line.bridge_money = 0
+                line.road_money = 0
+                line.coffin_money = 0
+                line.poor_help_money = 0
+                line.noassign_money = 0
+
+
 
     @api.onchange('donate_member')
     def show_family(self):
         r = []
         family = None
-
         for line in self.donate_member.store_history.history_data: #捐款者若為眷屬，要先找到戶長，在搜尋該戶長下所登記的所有人
             r.append([0, 0, {
                 'donate_member': line.id
@@ -76,14 +102,22 @@ class Donatesingle(models.Model):
                 'con_phone':self.con_phone,
                 'donate_total': self.donate_total,
                 'self_id':self.self_iden,
-                'donate_type':self.payment_method,
-                'donate_date':self.donate_date,
+                'donate_type':self.donate_type,
+                'payment_method': self.payment_method,
+                'donate_date':self.donate_date
             })
 
-    @api.depends('donate_total')
+
+    @api.depends('bridge_money','road_money','coffin_money','poor_help_money','noassign_money')
+    def calculate(self):
+        for r in self:
+            r.donate_total=r.bridge_money+r.road_money+r.coffin_money+r.poor_help_money+r.noassign_money
+
     def compute_des(self):
         for r in self:
             r.ps = r.donate_total
+
+
 
 class DonateSingleLine(models.Model): #先產出一個資料表供當次捐款明細的編輯，才不會更改到原始會員資料
     _name = 'donate.family.line'
@@ -94,3 +128,8 @@ class DonateSingleLine(models.Model): #先產出一個資料表供當次捐款�
     is_donate = fields.Boolean(string='是否捐助', related='donate_member.is_donate')
     is_merge = fields.Boolean(string='是否合併收據', related='donate_member.is_merge')
 
+    bridge_money = fields.Integer(string='造橋')
+    road_money = fields.Integer(string='補路')
+    coffin_money = fields.Integer(string='施棺')
+    poor_help_money = fields.Integer(string='貧困扶助')
+    noassign_money = fields.Integer(string='一般捐款')
