@@ -17,7 +17,6 @@
             </field>
         </record>
 
-
         <record id="donate_order_form" model="ir.ui.view">
             <field name="name">donate_order_form</field>
             <field name="model">donate.order</field>
@@ -28,6 +27,9 @@
 
                     </header>
                     <sheet>
+                        <div align="center">
+                        <span STYLE='FONT-SIZE:35PX'>捐款明細單</span>
+                        </div>
                         <group col="4">
                             <!--<field name="donate_id"/>-->
                             <!--<field name="paid_id"/>-->
@@ -40,11 +42,13 @@
                             <field name="donate_type"/>
                             <field name="self_id"/>
                         </group>
+                        <div align="center">
+                            <span STYLE='FONT-SIZE:20PX'>感謝捐助</span>
+                        </div>
                     </sheet>
                 </form>
             </field>
         </record>
-
 
         <record id="donate_order_action" model="ir.actions.act_window">
             <field name="name">捐款明細</field>
@@ -59,7 +63,6 @@
             </p>
             </field>
         </record>
-
         <menuitem id="donate_order_view_action" name="捐款明細" parent="another_menu" action="donate_order_action"/>
     </data>
 </odoo>

@@ -49,7 +49,7 @@
                             <field name="rec_addr"/>
                         </group>
                         <span STYLE='FONT-SIZE:25PX'>寄送方式</span>
-                        <group col="6">
+                        <group col="2">
                             <field name="receipt_send"/>
                         </group>
                         <group>
