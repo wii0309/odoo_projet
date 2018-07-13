@@ -55,27 +55,34 @@
                         <group>
                             <field name="ps" string="Thanks for your:"/>
                         </group>
-                        <group>
-                            <group col="6">
-                            <!--<field name="bridge_money" string="A.造橋"/>-->
-                            <!--<field name="road_money" string="B.補路"/>-->
-                            <!--<field name="coffin_money" string="C.施棺"/>-->
-                            <!--<field name="poor_help_money" string="D.貧困扶助"/>-->
-                            <!--<field name="noassign_money" string="E.一般捐款"/>-->
-                            </group>
-                            <field name="family_check">
-                                <tree>
-                                    <field name="donate_member"/>
-                                    <field name="is_donate"/>
-                                    <field name="is_merge"/>
-                                    <!--<field name="bridge_money" string="A.造橋"/>-->
-                                    <!--<field name="road_money" string="B.補路"/>-->
-                                    <!--<field name="coffin_money" string="C.施棺"/>-->
-                                    <!--<field name="poor_help_money" string="D.貧困扶助"/>-->
-                                    <!--<field name="noassign_money" string="E.一般捐款"/>-->
-                                </tree>
-                            </field>
-                        </group>
+                        <notebook>
+                            <page string="捐款">
+                                <span STYLE='FONT-SIZE:25PX'>捐款項目</span>
+                                <group col="6">
+                                    <field name="bridge_money" string="A.造橋"/>
+                                    <field name="road_money" string="B.補路"/>
+                                    <field name="coffin_money" string="C.施棺"/>
+                                    <field name="poor_help_money" string="D.貧困扶助"/>
+                                    <field name="noassign_money" string="E.一般捐款"/>
+                                </group>
+                                <span STYLE='FONT-SIZE:25PX'>捐款名冊</span>
+                                <field name="family_check">
+                                    <tree editable="bottom" >
+                                        <field name="donate_member"/>
+                                        <field name="is_donate"/>
+                                        <field name="is_merge"/>
+                                        <!--<field name="bridge_money" string="A.造橋"/>-->
+                                        <!--<field name="road_money" string="B.補路"/>-->
+                                        <!--<field name="coffin_money" string="C.施棺"/>-->
+                                        <!--<field name="poor_help_money" string="D.貧困扶助"/>-->
+                                        <!--<field name="noassign_money" string="E.一般捐款"/>-->
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="捐款記錄明細">
+
+                            </page>
+                        </notebook>
                     </sheet>
                 </form>
             </field>

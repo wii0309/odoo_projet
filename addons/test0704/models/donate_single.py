@@ -73,7 +73,11 @@ class Donatesingle(models.Model):
             res=self.env['donate.order'].create({
                 'donate_member':r.id,
                 'donate':self.donate_total,
-                'con_phone':self.con_phone
+                'con_phone':self.con_phone,
+                'donate_total': self.donate_total,
+                'self_id':self.self_iden,
+                'donate_type':self.payment_method,
+                'donate_date':self.donate_date,
             })
 
     @api.depends('donate_total')
@@ -86,6 +90,7 @@ class DonateSingleLine(models.Model): #先產出一個資料表供當次捐款�
 
     parent_id = fields.Many2one(comodel_name='donate.single', index=True)
     donate_member = fields.Many2one(comodel_name='openacademy.gofor', string='捐款人', index=True)
+
     is_donate = fields.Boolean(string='是否捐助', related='donate_member.is_donate')
     is_merge = fields.Boolean(string='是否合併收據', related='donate_member.is_merge')
 

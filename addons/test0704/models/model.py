@@ -193,7 +193,7 @@ class Gofor(models.Model):
             name = "%s" % (record.name)
             result.append((record.id, name))
         return result
-
+###########################
      @api.model
      def create(self, vals):
           res_id = super(Gofor, self).create(vals)
