@@ -283,7 +283,10 @@
                         </group>
                         <notebook>
                             <page name="description" string="關於" >
-                                <field name="description"/>
+                                <div align="left">
+                                    <span STYLE='FONT-SIZE:12PX'>個人資料確認:</span>
+                                    <field name="description"/>
+                                </div>
                             </page>
                             <page string="備忘" name="This is an example of notebooks">
                                 <field name="memo"/>

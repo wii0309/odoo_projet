@@ -9,7 +9,7 @@
                     <field name="donate_member"/>
                     <field name="state"/>
                     <field name="con_phone"/>
-                    <field name="donate"/>
+                    <!--<field name="donate"/>-->
                     <field name="payment_method"/>
                     <field name="donate_date"/>
                     <field name="bridge_money"/>
@@ -38,7 +38,7 @@
                             <field name="donate_member"/>
                             <field name="con_phone"/>
                             <field name="donate_date"/>
-                            <field name="donate"/>
+                            <!--<field name="donate"/>-->
                             <field name="donate_total"/>
                             <field name="self_id"/>
                             <field name="payment_method"/>
@@ -49,7 +49,7 @@
                             <field name="noassign_money"/>
                         </group>
                         <div align="center">
-                            <span STYLE='FONT-SIZE:20PX'>感謝捐助</span>
+                            <span STYLE='FONT-SIZE:40PX'>----嘉邑行善團----</span>
                         </div>
                     </sheet>
                 </form>

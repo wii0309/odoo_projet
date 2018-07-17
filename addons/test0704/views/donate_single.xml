@@ -55,7 +55,7 @@
                             <field name="receipt_send"/>
                         </group>
                         <group>
-                            <field name="ps" string="Thanks for your:"/>
+                            <!--<field name="ps" string="Thanks for your:"/>-->
                         </group>
                         <notebook>
                             <page string="捐款">
@@ -85,7 +85,7 @@
                                     </tree>
                                 </field>
                             </page>
-                            <page string="捐款記錄明細">
+                            <page string="捐款記錄(無作用)">
 
                             </page>
                         </notebook>
