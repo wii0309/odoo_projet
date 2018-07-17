@@ -217,47 +217,33 @@
             </field>
         </record>
 
-
-
         <!--<record id="readclass_kanban" model="ir.ui.view">-->
             <!--<field name="name">readclass_kanban</field>-->
             <!--<field name="model">read.class</field>-->
             <!--<field name="arch" type="xml">-->
-                <!--<field name="color"/>-->
-                <!--<kanban string="簽到處">-->
-                    <!--<templates>-->
-                        <!--<t t-name="kanban-box">-->
-                            <!--<div-->
-                                    <!--t-attf-class="oe_kanban_color_{{kanban_getcolor(record.color.raw_value)}}-->
-                                 <!--oe_kanban_global_click_edit oe_semantic_html_override-->
-                                 <!--oe_kanban_card {{record.group_fancy==1 ? 'oe_kanban_card_fancy' : ''}}">-->
-                                <!--<div class="oe_dropdown_kanban">-->
-                                    <!--&lt;!&ndash; dropdown menu &ndash;&gt;-->
-                                    <!--<div class="oe_dropdown_toggle">-->
-                                        <!--<i class="fa fa-bars fa-lg"/>-->
-                                        <!--<ul class="oe_dropdown_menu">-->
-                                            <!--<li>-->
-                                                <!--<a type="delete">Delete</a>-->
-                                            <!--</li>-->
-                                            <!--<li>-->
-                                                <!--<ul class="oe_kanban_colorpicker" data-field="color"/>-->
-                                            <!--</li>-->
-                                        <!--</ul>-->
-                                    <!--</div>-->
-                                    <!--<div class="oe_clear"></div>-->
-                                <!--</div>-->
-                                <!--&lt;!&ndash;<div t-attf-class="oe_kanban_content">&ndash;&gt;-->
-                                    <!--&lt;!&ndash;Session name:&ndash;&gt;-->
-                                    <!--&lt;!&ndash;<field name="name"/><br/>&ndash;&gt;-->
-                                    <!--&lt;!&ndash;Start date:&ndash;&gt;-->
-                                    <!--&lt;!&ndash;<field name="start_date"/><br/>&ndash;&gt;-->
-                                    <!--&lt;!&ndash;duration:&ndash;&gt;-->
-                                    <!--&lt;!&ndash;<field name="duration"/>&ndash;&gt;-->
-                                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--<kanban>-->
+                <!--<field name="name"/>-->
+                <!--<field name="code"/>-->
+                <!--<field name="lst_price"/>-->
+                <!--<templates>-->
+                    <!--<t t-name="kanban-box">-->
+                        <!--<div class="oe_kanban_vignette oe_semantic_html_override">-->
+                            <!--<a type="open"><img t-att-src="kanban_image('my.module', 'image_small', record.id.value)" class="oe_kanban_image"/></a>-->
+                            <!--<div class="oe_kanban_details">-->
+                                <!--<h4>-->
+                                    <!--<a type="open">-->
+                                         <!--<t t-if="record.code.raw_value">[<field name="code"/>]</t> <field name="name"/>-->
+                                    <!--</a>-->
+                                <!--</h4>-->
+                                <!--<div name="tags"/>-->
+                                <!--<ul>-->
+                                    <!--<li>Price: <field name="lst_price"></field></li>-->
+                                <!--</ul>-->
                             <!--</div>-->
-                        <!--</t>-->
-                    <!--</templates>-->
-                <!--</kanban>-->
+                        <!--</div>-->
+                    <!--</t>-->
+                <!--</templates>-->
+            <!--</kanban>-->
             <!--</field>-->
         <!--</record>-->
 

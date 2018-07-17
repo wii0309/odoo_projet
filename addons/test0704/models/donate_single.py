@@ -49,6 +49,8 @@ class Donatesingle(models.Model):
     donate_type = fields.Selection(selection=[(01, '造橋'), (02, '補路'), (03, '施棺'), (04, '伙食費'), (05, '貧困扶助'), (06, '一般捐款'), (99, '其他工程')],
         string='捐款種類', index=True)
     current_donate_project = fields.Integer('捐款項目小計')
+    current_donate_total = fields.Integer('捐款總額小計')
+    current_donate_people = fields.Integer('捐款人數小計')
 
     @api.onchange('family_check')
     def current_people(self):
@@ -80,6 +82,55 @@ class Donatesingle(models.Model):
                 line.poor_help_money = 0
                 line.noassign_money = 0
 
+    @api.onchange('bridge_money', 'road_money', 'coffin_money', 'poor_help_money', 'noassign_money')
+    def add_to_family(self):
+        self.current_donate_total = 0
+        if self.family_check:
+            for line in self.family_check.filtered(lambda x: x.is_donate == True):
+                if self.bridge_money != 0:
+                    line.bridge_money = self.bridge_money
+                elif self.bridge_money == 0:
+                    if line.bridge_money != 0:
+                        line.bridge_money = self.bridge_money
+                if self.road_money != 0:
+                    line.road_money = self.road_money
+                elif self.road_money == 0:
+                    if line.road_money != 0:
+                        line.road_money = self.road_money
+                if self.coffin_money != 0:
+                    line.coffin_money = self.coffin_money
+                elif self.coffin_money == 0:
+                    if line.coffin_money != 0:
+                        line.coffin_money = self.coffin_money
+                if self.poor_help_money != 0:
+                    line.poor_help_money = self.poor_help_money
+                elif self.poor_help_money == 0:
+                    if line.poor_help_money != 0:
+                        line.poor_help_money = self.poor_help_money
+                if self.noassign_money != 0:
+                    line.noassign_money = self.noassign_money
+                elif self.noassign_money == 0:
+                    if line.noassign_money != 0:
+                        line.noassign_money = self.noassign_money
+
+        for line in self.family_check:
+            if line.is_donate is True:
+                if line.bridge_money != 0:
+                    self.bridge = True
+                if line.road_money != 0:
+                    self.road = True
+                if line.coffin_money != 0:
+                    self.coffin = True
+                if line.poor_help_money != 0:
+                    self.poor_help = True
+                if line.noassign_money != 0:
+                    self.noassign = True
+                self.current_donate_total += line.bridge_money
+                self.current_donate_total += line.road_money
+                self.current_donate_total += line.coffin_money
+                self.current_donate_total += line.poor_help_money
+                self.current_donate_total += line.noassign_money
+
 
 
     @api.onchange('donate_member')
@@ -94,18 +145,107 @@ class Donatesingle(models.Model):
             'family_check': r,
         })
 
+    def add_to_list_create(self, record):
+        if record.family_check:
+            for line in record.family_check.filtered(lambda x: x.is_donate == True):
+                if record.print_all_donor_list:
+                    if line.bridge_money == 0 and line.road_money == 0 and line.coffin_money == 0 and line.poor_help_money == 0 and line.noassign_money == 0:
+                        record.save_donate_list(6, line.donate_member, line.noassign_money)
+                    if line.bridge_money != 0:
+                        record.save_donate_list(1, line.donate_member, line.bridge_money)
+                    if line.road_money != 0:
+                        record.save_donate_list(2, line.donate_member, line.road_money)
+                    if line.coffin_money != 0:
+                        record.save_donate_list(3, line.donate_member, line.coffin_money)
+                    if line.poor_help_money != 0:
+                        record.save_donate_list(5, line.donate_member, line.poor_help_money)
+                    if line.noassign_money != 0:
+                        record.save_donate_list(6, line.donate_member, line.noassign_money)
+                else:
+                    if line.bridge_money != 0:
+                        record.save_donate_list(1, line.donate_member, line.bridge_money)
+                    if line.road_money != 0:
+                        record.save_donate_list(2, line.donate_member, line.road_money)
+                    if line.coffin_money != 0:
+                        record.save_donate_list(3, line.donate_member, line.coffin_money)
+                    if line.poor_help_money != 0:
+                        record.save_donate_list(5, line.donate_member, line.poor_help_money)
+                    if line.noassign_money != 0:
+                        record.save_donate_list(6, line.donate_member, line.noassign_money)
+        else:
+            raise ValidationError(u'捐款名冊為空，無法進行捐款作業')
+
     def add_to_list(self):
-        for r in self.donate_member.history_data:
-            res=self.env['donate.order'].create({
-                'donate_member':r.id,
-                'donate':self.donate_total,
-                'con_phone':self.con_phone,
+        for r in self.family_check:
+            res = self.env['donate.order'].create({
+                'donate_member': r.donate_member.id,
+                'donate': self.donate_total,
+                'con_phone': self.con_phone,
                 'donate_total': self.donate_total,
-                'self_id':self.self_iden,
-                'donate_type':self.donate_type,
+                'self_id': self.self_iden,
+                'donate_type': self.donate_type,
                 'payment_method': self.payment_method,
-                'donate_date':self.donate_date
+                'donate_date': self.donate_date,
+                'road_money': r.road_money,
+                'bridge_money': r.bridge_money,
+                'coffin_money': r.coffin_money,
+                'poor_help_money':r.poor_help_money,
+                'noassign_money':r.noassign_money,
             })
+
+    def save_donate_list(self, donate_type, member_id, money):  # 將明細產生
+
+        if donate_type == 3:            #施棺捐款多了可用餘額的欄位
+            self.write({
+                'donate_list': [(0, 0, {
+                    'donate_id': self.donate_id,
+                    'donate_member': member_id.id,
+                    'donate_type': donate_type,
+                    'donate': money,
+                    'donate_date': self.donate_date,
+                    # 'self_id': member_id.self_iden,
+                    # 'payment_method': int(self.payment_method),
+                    # 'available_balance': money,
+                    # 'key_in_user': self.key_in_user.id,
+                    # 'cashier':self.work_id.id,
+                    # 'debit_method': self.debit_method,
+                })],
+                'print_all_donor_list': self.print_all_donor_list
+            })
+        else:
+            self.write({
+                'donate_list': [(0, 0, {
+                    'donate_id': self.donate_id,
+                    'donate_member': member_id.id,
+                    'donate_type': donate_type,
+                    'donate': money,
+                    'donate_date':self.donate_date,
+                    # 'self_id': member_id.self_iden,
+                    # 'payment_method': int(self.payment_method),
+                    # 'key_in_user': self.key_in_user.id,
+                    # 'cashier': self.work_id.id,
+                    # 'debit_method': self.debit_method,
+                })],
+                'print_all_donor_list': self.print_all_donor_list
+            })
+
+        def parent_list_creat(self):
+            r = []
+            for line in self.donate_member.store_history.history_data:
+                exist = False
+                for family_line in self.family_check:
+                    if family_line.donate_member.id == line.id:
+                        exist = True
+
+                if exist is False:
+                    r.append([0, 0, {
+                        'donate_member': line.id
+                    }])
+
+            self.write({
+                'family_check': r
+            })
+            self.donate_list.unlink()
 
 
     @api.depends('bridge_money','road_money','coffin_money','poor_help_money','noassign_money')
@@ -117,6 +257,26 @@ class Donatesingle(models.Model):
         for r in self:
             r.ps = r.donate_total
 
+    @api.depends('donate_list')
+    def compute_family_list(self):
+        for line in self:
+            str = ''
+            for row in line.donate_list:
+                if row.donate_type == 1:
+                    str += " (%s %s %s )," % (row.donate_member.name, u'造橋', row.donate)
+                if row.donate_type == 2:
+                    str += " (%s %s %s )," % (row.donate_member.name, u'補路', row.donate)
+                if row.donate_type == 3:
+                    str += " (%s %s %s )," % (row.donate_member.name, u'施棺', row.donate)
+                if row.donate_type == 4:
+                    str += " (%s %s %s )," % (row.donate_member.name, u'伙食費', row.donate)
+                if row.donate_type == 5:
+                    str += " (%s %s %s )," % (row.donate_member.name, u'貧困扶助', row.donate)
+                if row.donate_type == 6:
+                    str += " (%s %s %s )," % (row.donate_member.name, u'一般捐款', row.donate)
+                if row.donate_type == 99:
+                    str += " (%s %s %s )," % (row.donate_member.name, u'其他工程', row.donate)
+            line.donate_family_list = str.rstrip(',')
 
 
 class DonateSingleLine(models.Model): #先產出一個資料表供當次捐款明細的編輯，才不會更改到原始會員資料

@@ -10,10 +10,13 @@
                     <field name="state"/>
                     <field name="con_phone"/>
                     <field name="donate"/>
-                    <field name="donate_type"/>
                     <field name="payment_method"/>
-                    <!--<field name="use_amount" colspan="1"/>-->
                     <field name="donate_date"/>
+                    <field name="bridge_money"/>
+                    <field name="road_money"/>
+                    <field name="coffin_money"/>
+                    <field name="poor_help_money"/>
+                    <field name="noassign_money"/>
                     <field name="donate_member" invisible = "1"/>
                 </tree>
             </field>
@@ -32,17 +35,18 @@
                         <span STYLE='FONT-SIZE:35PX'>捐款明細單</span>
                         </div>
                         <group col="4">
-                            <!--<field name="donate_id"/>-->
-                            <!--<field name="paid_id"/>-->
-                            <!--<field name="p_type"/>-->
                             <field name="donate_member"/>
                             <field name="con_phone"/>
                             <field name="donate_date"/>
                             <field name="donate"/>
                             <field name="donate_total"/>
-                            <field name="donate_type"/>
                             <field name="self_id"/>
                             <field name="payment_method"/>
+                            <field name="bridge_money"/>
+                            <field name="road_money"/>
+                            <field name="coffin_money"/>
+                            <field name="poor_help_money"/>
+                            <field name="noassign_money"/>
                         </group>
                         <div align="center">
                             <span STYLE='FONT-SIZE:20PX'>感謝捐助</span>
