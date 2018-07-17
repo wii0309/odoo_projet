@@ -12,8 +12,6 @@ class Donatesingle(models.Model):
     donate_date = fields.Date('捐款日期', index=True, required=True)
     donate_total = fields.Integer(string='捐款總額' , compute='calculate', store=True)
     receipt_send = fields.Boolean(string='收據寄送')
-    # work_id = fields.Many2one(comodel_name='openacademy.gofor', string='收費員', states={2: [('readonly', True)]},
-    #                           required=True)
     payment_method = fields.Selection([(1, '現金'), (2, '郵政劃撥'), (3, '信用卡扣款'), (4, '銀行轉帳'), (5, '支票')], string='繳費方式',
                                       required=True)
     name = fields.Char(string='姓名',related='donate_member.name', readonly=True)
@@ -131,9 +129,7 @@ class Donatesingle(models.Model):
                 self.current_donate_total += line.poor_help_money
                 self.current_donate_total += line.noassign_money
 
-
-
-    @api.onchange('donate_member')
+    @api.onchange('donate_member') #################重要
     def show_family(self):
         r = []
         family = None
@@ -247,7 +243,6 @@ class Donatesingle(models.Model):
             })
             self.donate_list.unlink()
 
-
     @api.depends('bridge_money','road_money','coffin_money','poor_help_money','noassign_money')
     def calculate(self):
         for r in self:
@@ -277,7 +272,6 @@ class Donatesingle(models.Model):
                 if row.donate_type == 99:
                     str += " (%s %s %s )," % (row.donate_member.name, u'其他工程', row.donate)
             line.donate_family_list = str.rstrip(',')
-
 
 class DonateSingleLine(models.Model): #先產出一個資料表供當次捐款明細的編輯，才不會更改到原始會員資料
     _name = 'donate.family.line'
