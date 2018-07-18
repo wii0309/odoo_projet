@@ -172,6 +172,7 @@ class Gofor(models.Model):
 
     w_id = fields.Char(string='舊團員編號')
     new_coding = fields.Char(string='捐款者編號')
+    rec_send = fields.Boolean(string='收據寄送', default=True)
 
     def toggle_donate(self):
         self.is_donate = not self.is_donate

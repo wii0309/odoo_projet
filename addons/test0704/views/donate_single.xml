@@ -48,6 +48,9 @@
                             <field name="name"/>
                             <field name="donate_id"/>
                             <field name="key_in_user"/>
+                            <field name="work_id"/>
+                            <field name="year_fee"/>
+                            <field name="rec_send"/>
                             <field name="self_iden"/>
                             <field name="cellphone"/>
                             <field name="con_phone"/>

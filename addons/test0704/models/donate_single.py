@@ -61,7 +61,9 @@ class Donatesingle(models.Model):
     new_coding = fields.Char('新捐款者編號', related='donate_member.new_coding')
     donate_id = fields.Char(string='收據編號')
     key_in_user = fields.Many2one(comodel_name='res.users', string='輸入人員')
-
+    work_id = fields.Many2one(comodel_name='res.partner', string='收費員')
+    year_fee = fields.Boolean(string='年繳')
+    rec_send = fields.Boolean(string='收據寄送', default=True)
     # @api.model
     # def create(self, vals):
     #     tools.image_resize_images(vals)

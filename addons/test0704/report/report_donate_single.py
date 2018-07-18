@@ -19,7 +19,7 @@ class DonateSingleReport(models.Model):
     title_total_price_big = fields.Char(string='金額大寫', compute='compute_price', store=True)
     title_year_fee = fields.Integer(string='年繳')
     key_in_user = fields.Many2one(comodel_name='res.users', string='輸入人員', states={2: [('readonly', True)]})
-    work_id = fields.Many2one(comodel_name='cashier.base', string='收費員', states={2: [('readonly', True)]})
+    work_id = fields.Many2one(comodel_name='res.partner', string='收費員')
 
     @api.depends('donate_line')
     def compute_price(self):
@@ -111,7 +111,7 @@ class ReportDonateSingleMerge(models.AbstractModel):
                 'donate_date': line.donate_date,
                 'donate_total': line.donate_total,
                 'key_in_user': line.key_in_user.name,
-                'work_id': line.work_id.c_id + line.work_id.name,
+                'work_id': line.work_id.name,
                 'report_price_big': line.report_price_big,
                 'print_date': line.print_date,
                 'state': line.state,
