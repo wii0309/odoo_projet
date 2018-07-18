@@ -8,8 +8,8 @@ class Donatesingle(models.Model):
 
     donate_member = fields.Many2one(comodel_name='openacademy.gofor', string='捐款者',
                                     required = True, index = True)
-    state = fields.Selection([(1, '已產生'), (2, '已列印'), (3, '已作廢')],
-                             string='狀態', default=1, index=True)
+    state = fields.Selection(selection=[('a', '已產生'), ('b', '已列印'), ('c', '已作廢')],
+                             string='狀態', default='a', index=True)
     donate_date = fields.Date('捐款日期', index=True, required=True)
     donate_total = fields.Integer(string='捐款總額' , compute='calculate', store=True)
     receipt_send = fields.Boolean(string='收據寄送')
@@ -56,6 +56,11 @@ class Donatesingle(models.Model):
 
     image =fields.Binary("Photo", attachment=True,
                                   help="This field holds the image used as photo for the test, limited to 1024x1024px.")
+
+    w_id = fields.Char('舊團員編號', related='donate_member.w_id')
+    new_coding = fields.Char('新捐款者編號', related='donate_member.new_coding')
+    donate_id = fields.Char(string='收據編號')
+    key_in_user = fields.Many2one(comodel_name='res.users', string='輸入人員')
 
     # @api.model
     # def create(self, vals):

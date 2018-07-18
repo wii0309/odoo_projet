@@ -170,6 +170,9 @@ class Gofor(models.Model):
     store_history = fields.Many2one(comodel_name='openacademy.gofor', string='戶長')
     history_data = fields.One2many(comodel_name='openacademy.gofor', inverse_name='store_history')
 
+    w_id = fields.Char(string='舊團員編號')
+    new_coding = fields.Char(string='捐款者編號')
+
     def toggle_donate(self):
         self.is_donate = not self.is_donate
 

@@ -24,6 +24,10 @@
         'views/donate_order.xml',
         'views/sale_order_view.xml',
         'wizard/wizard_abandon_single.xml',
+
+        # 'report/donate_single_report.xml',
+        'report/donate_single_report_print.xml',
+        'report/report_donate_single.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

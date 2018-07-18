@@ -272,6 +272,8 @@
                     <sheet>
                         <group col="4">
                             <field name="name"/>
+                            <field name="w_id"/>
+                            <field name="new_coding"/>
                             <field name="amount"/>
                             <field name="birth"/>
                             <field name="cellphone"/>
@@ -323,6 +325,8 @@
             <field name="arch" type="xml">
                 <tree string="tree string what happened">
                     <field name="name"/>
+                    <field name="w_id"/>
+                    <field name="new_coding"/>
                     <field name="amount"/>
                     <field name="birth"/>
                     <field name="cellphone"/>
