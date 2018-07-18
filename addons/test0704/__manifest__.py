@@ -23,6 +23,7 @@
         'views/donate_single.xml',
         'views/donate_order.xml',
         'views/sale_order_view.xml',
+        'wizard/wizard_abandon_single.xml',
     ],
     # only loaded in demonstration mode
     'demo': [

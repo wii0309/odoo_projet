@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from docutils.parsers.rst.directives import images
 from odoo import api, fields, models
 from odoo.exceptions import ValidationError
 
@@ -18,7 +19,7 @@ class Donatesingle(models.Model):
     self_iden = fields.Char(string='身分證字號')
     cellphone = fields.Char(string='手機' )
     con_phone = fields.Char(string='聯絡電話',related='donate_member.con_phone',readonly=True)
-    zip_code = fields.Char(string='報表郵遞區號')
+    zip_code = fields.Char(string='報表郵遞區號' ,help="bao biao yo di qu hao")
     con_addr = fields.Char(string='報表地址')
     zip = fields.Char(string='收據郵遞區號' ,related='donate_member.zip',readonly=True)
     rec_addr = fields.Char(string='收據地址',related='donate_member.rec_addr',readonly=True)
@@ -49,6 +50,25 @@ class Donatesingle(models.Model):
     current_donate_project = fields.Integer('捐款項目小計')
     current_donate_total = fields.Integer('捐款總額小計')
     current_donate_people = fields.Integer('捐款人數小計')
+
+    show_current_donate_project =fields.Integer('本次捐款項目共計',related='current_donate_project',readonly=True)
+    show_current_donate_total = fields.Integer('本次捐款總額共計',related='current_donate_total',readonly=True)
+
+    image =fields.Binary("Photo", attachment=True,
+                                  help="This field holds the image used as photo for the test, limited to 1024x1024px.")
+
+    # @api.model
+    # def create(self, vals):
+    #     tools.image_resize_images(vals)
+    #     return super(Donatesingle, self).create(vals)
+
+    def button_to_cnacel_donate(self):
+        single_data = self.env['wizard.abandon.single'].create({
+            'donate_single_code': self.id
+        })
+        action = self.env.ref('test0704.action_wizard_abandon_single').read()[0]
+        action['res_id'] = single_data.id
+        return action
 
     @api.onchange('family_check')
     def current_people(self):
@@ -176,7 +196,7 @@ class Donatesingle(models.Model):
             res = self.env['donate.order'].create({
                 'donate_member': r.donate_member.id,
                 'donate': self.donate_total,
-                'con_phone': self.con_phone,
+                'con_phone': r.donate_member.cellphone,
                 'donate_total': self.donate_total,
                 'self_id': self.self_iden,
                 'donate_type': self.donate_type,

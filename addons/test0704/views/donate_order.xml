@@ -40,13 +40,13 @@
                             <field name="donate_date"/>
                             <!--<field name="donate"/>-->
                             <field name="donate_total"/>
-                            <field name="self_id"/>
                             <field name="payment_method"/>
                             <field name="bridge_money"/>
                             <field name="road_money"/>
                             <field name="coffin_money"/>
                             <field name="poor_help_money"/>
                             <field name="noassign_money"/>
+                            <field name="self_id" invisible="1"/>
                         </group>
                         <div align="center">
                             <span STYLE='FONT-SIZE:40PX'>----嘉邑行善團----</span>

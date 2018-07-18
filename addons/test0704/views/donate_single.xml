@@ -8,7 +8,7 @@
                 <tree string="">
                     <field name="donate_member"/>
                     <field name="state"/>
-                    <field name="donate_total"/>
+                    <field name="show_current_donate_total" string="捐款額"/>
                     <field name="donate_date" string="捐款日期"/>
                     <field name="receipt_send"/>
                     <!--<field name="donate_family_list"/>-->
@@ -23,6 +23,10 @@
             <field name="model">donate.single</field>
             <field name="arch" type="xml">
                 <form string="">
+                    <header>
+                        <button name="button_to_cnacel_donate" string="作廢" type="object" class="oe_highlight"/>
+                        <field name="state" widget="statusbar" statusbar_visible="1,2,3" clickable="True"/>
+                    </header>
                     <sheet>
                         <div class="oe_button_box" name="button_box">
                             <button name="add_to_list" string="產生捐款明細" type="object" class="oe_stat_button"
@@ -59,7 +63,7 @@
                         </group>
                         <notebook>
                             <page string="捐款">
-                                <span STYLE='FONT-SIZE:25PX'>捐款項目</span>
+                                <span STYLE='FONT-SIZE:25PX'>共同捐款項目</span>
                                 <group col="6">
                                     <field name="bridge_money" string="A.造橋"/>
                                     <field name="road_money" string="B.補路"/>
@@ -67,10 +71,14 @@
                                     <field name="poor_help_money" string="D.貧困扶助"/>
                                     <field name="noassign_money" string="E.一般捐款"/>
                                 </group>
-                                <span STYLE='FONT-SIZE:25PX'>捐款名冊</span>
+                                <span STYLE='FONT-SIZE:25PX'>本戶捐款名冊</span>
                                 <group col="6">
-                                   <field name="current_donate_project"/>
-                                    <field name="current_donate_total"/>
+                                    <field name="show_current_donate_project"/>
+                                    <field name="show_current_donate_total"/>
+                                </group>
+                                <group>
+                                    <field name="current_donate_project" invisible="1"/>
+                                    <field name="current_donate_total" invisible="1"/>
                                 </group>
                                 <field name="family_check">
                                     <tree editable="bottom" >
@@ -85,8 +93,9 @@
                                     </tree>
                                 </field>
                             </page>
-                            <page string="捐款記錄(無作用)">
-
+                            <page string="不要按">
+                                <span STYLE='FONT-SIZE:12PX'>沒</span>
+                                <field name="image" widget='image' class="oe_avatar" />
                             </page>
                         </notebook>
                     </sheet>
