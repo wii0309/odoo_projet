@@ -38,13 +38,7 @@
                             <field name="donate_date" colspan="3"/>
                         </group>
                         <group col="4">
-                            <!--<field name="state"/>-->
-                            <!--<field name="work_id" options="{'no_quick_create': True, 'no_create_edit' : True}"/>-->
-                            <!--<field name="donate_type"/>-->
-                            <field name="donate_total"/>
                             <field name="payment_method"/>
-                        </group>
-                        <group col="4">
                             <field name="name"/>
                             <field name="donate_id"/>
                             <field name="key_in_user"/>
@@ -58,6 +52,7 @@
                             <field name="con_addr"/>
                             <field name="zip"/>
                             <field name="rec_addr"/>
+                            <field name="donate_total"/>
                         </group>
                         <span STYLE='FONT-SIZE:25PX'>寄送方式</span>
                         <group col="2">
@@ -98,9 +93,25 @@
                                     </tree>
                                 </field>
                             </page>
-                            <page string="不要按">
+                            <page string="禁止拍照">
                                 <span STYLE='FONT-SIZE:12PX'>沒</span>
                                 <field name="image" widget='image' class="oe_avatar" />
+                            </page>
+                            <page string="歷史捐款明細">
+                                <field name="donate_list">
+                                    <tree editable="bottom">
+                                        <field name="donate_member"/>
+                                        <field name="state"/>
+                                        <field name="con_phone"/>
+                                        <field name="payment_method"/>
+                                        <field name="donate_date"/>
+                                        <field name="bridge_money"/>
+                                        <field name="road_money"/>
+                                        <field name="coffin_money"/>
+                                        <field name="poor_help_money"/>
+                                        <field name="noassign_money"/>
+                                        <field name="donate_member" invisible = "1"/>
+                                </tree>
                             </page>
                         </notebook>
                     </sheet>
