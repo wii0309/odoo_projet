@@ -68,21 +68,21 @@ class ReportLine(models.Model):
     print_all_donor_list = fields.Boolean(string='列印願意捐助的眷屬')
 
 class ReportDonateSingleMerge(models.AbstractModel):
-    _name = 'report.cdg_base.donate_single_merge'
+    _name = 'report.test0704.donate_single_merge'
 
     @api.multi
     def render_html(self, docids, data=None):
         docs = self.env['donate.single'].browse(docids)
         for line in docs:
             line.report_donate = line.donate_date
-            if line.state == 3:
+            if line.state == 'c':
                 raise ValidationError(u'本捐款單已經作廢')
-            elif line.state == 1:
+            elif line.state == 'a':
                 # line.state = 2
                 line.print_count+=1
                 line.print_date = datetime.date.today()
                 line.print_user = self.env.uid
-            elif line.state == 2:
+            elif line.state == 'b':
                 line.print_date = datetime.date.today()
 
         res_doc= []
@@ -127,9 +127,9 @@ class ReportDonateSingleMerge(models.AbstractModel):
             'docs': res_doc,
         }
         for row in docs:
-            if row.state == 1:
-                row.state = 2
-        return self.env['report'].render('cdg_base.donate_single_merge', values=docargs)
+            if row.state == 'a':
+                row.state = 'b'
+        return self.env['report'].render('test0704.donate_single_merge', values=docargs)
 
     def convert(self, n):
         units = ['', '萬', '億']

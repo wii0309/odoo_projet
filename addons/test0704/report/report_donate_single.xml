@@ -6,7 +6,8 @@
                 string="合併收據-新"
                 report_type="qweb-html"
                 name="test0704.donate_single_merge"
-                file="cdg_base.donate_single_merge"/>
+                file="test0704.donate_single_merge"/>
+
         <report id="action_donate_single_personal"
                 model="donate.single"
                 string="個人收據-新"
