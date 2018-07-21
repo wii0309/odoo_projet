@@ -32,7 +32,6 @@ class Donatesingle(models.Model):
 
     donate_list = fields.One2many(comodel_name='donate.order', inverse_name='donate_list_id', string='捐款明細',
                                   states={2: [('readonly', True)]})
-
     ps = fields.Text('備註' ,compute='compute_des',store=True)
 
     history_donate_flag = fields.Boolean(string='是否上次捐款')
@@ -314,3 +313,6 @@ class DonateSingleLine(models.Model): #先產出一個資料表供當次捐款�
     coffin_money = fields.Integer(string='施棺')
     poor_help_money = fields.Integer(string='貧困扶助')
     noassign_money = fields.Integer(string='一般捐款')
+
+
+    #需要多一個class儲存donate_list
